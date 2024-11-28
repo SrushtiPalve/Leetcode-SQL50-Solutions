@@ -1,0 +1,17 @@
+WITH First_year AS (
+    SELECT
+        product_id,
+        year,
+        quantity,
+        price,
+        RANK() OVER(PARTITION BY product_id ORDER BY year) year_rank
+    FROM Sales
+)
+
+SELECT
+    product_id,
+    year first_year,
+    quantity,
+    price
+FROM First_year
+WHERE year_rank = 1;
