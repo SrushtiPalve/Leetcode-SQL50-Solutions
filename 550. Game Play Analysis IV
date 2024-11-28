@@ -1,0 +1,15 @@
+WITH FirstLogin AS (
+    SELECT 
+        player_id,
+        MIN(event_date) first_login
+    FROM Activity
+    GROUP BY player_id
+)
+SELECT 
+    ROUND(
+        COUNT(f.player_id)/COUNT(DISTINCT a.player_id)
+    , 2) fraction
+FROM Activity a 
+LEFT JOIN FirstLogin f 
+    ON a.player_id = f.player_id
+    AND DATE_SUB(a.event_date, INTERVAL 1 DAY) = f.first_login;
