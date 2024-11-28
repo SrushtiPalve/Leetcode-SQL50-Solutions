@@ -1,0 +1,9 @@
+SELECT
+    CASE
+    WHEN COUNT(num) = 1 THEN num
+    ELSE null
+    END num
+FROM MyNumbers 
+GROUP BY num 
+ORDER BY num DESC
+LIMIT 1;
