@@ -1,0 +1,23 @@
+WITH Requests AS (
+SELECT 
+    user_id,
+    COUNT(action) total_actions 
+FROM Confirmations
+GROUP BY user_id 
+),
+Confirmed AS (
+    SELECT 
+    user_id,
+    COUNT(action) confirmed 
+FROM Confirmations
+WHERE action = 'confirmed'
+GROUP BY user_id 
+)
+SELECT s.user_id,
+    ROUND(COALESCE(c.confirmed/r.total_actions,0),2) confirmation_rate
+FROM Signups s
+LEFT JOIN Requests r
+    ON s.user_id = r.user_id
+LEFT JOIN Confirmed c
+    ON s.user_id = c.user_id
+ORDER BY confirmation_rate ASC;
