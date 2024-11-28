@@ -1,0 +1,12 @@
+WITH First AS (
+    SELECT delivery_id, customer_id, order_date, customer_pref_delivery_date,
+        RANK() OVER(PARTITION BY customer_id ORDER BY order_date) first_order
+    FROM Delivery
+)
+SELECT 
+    ROUND(AVG(
+        (DATEDIFF(order_date, customer_pref_delivery_date)=0)
+        *100)
+    ,2) immediate_percentage 
+FROM First
+WHERE first_order = 1;
