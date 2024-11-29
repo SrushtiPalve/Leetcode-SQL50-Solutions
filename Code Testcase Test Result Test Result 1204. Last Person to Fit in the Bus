@@ -1,0 +1,12 @@
+WITH CTE AS (
+    SELECT 
+        *,
+        SUM(weight) OVER(ORDER BY turn) rolling_weight
+    FROM Queue
+    ORDER BY turn ASC
+)
+SELECT person_name 
+FROM CTE 
+WHERE rolling_weight <=1000
+ORDER BY rolling_weight DESC
+LIMIT 1;
