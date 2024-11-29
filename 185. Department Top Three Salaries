@@ -1,0 +1,18 @@
+WITH SalaryRank AS (
+    SELECT 
+        id,
+        name,
+        salary,
+        departmentId,
+        DENSE_RANK() OVER(PARTITION BY departmentId ORDER BY salary DESC) rnk
+    FROM Employee
+)
+SELECT 
+    d.name Department,
+    s.name Employee,
+    s.salary Salary
+FROM SalaryRank s
+JOIN Department d
+    ON s.departmentId = d.id
+WHERE rnk <=3
+ORDER BY Department;
