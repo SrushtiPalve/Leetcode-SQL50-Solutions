@@ -1,0 +1,7 @@
+WITH CTE AS (
+    SELECT MIN(id) min_id
+    FROM Person 
+    GROUP BY email
+)
+DELETE FROM Person
+WHERE id NOT IN (SELECT min_id FROM CTE);
