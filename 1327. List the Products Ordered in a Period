@@ -1,0 +1,11 @@
+WITH UnitsSold AS (
+    SELECT product_id, SUM(unit) total_units
+    FROM Orders 
+    WHERE order_date LIKE '2020-02%'
+    GROUP BY product_id
+    HAVING total_units >= 100
+)
+SELECT p.product_name, s.total_units unit 
+FROM Products p
+JOIN UnitsSold s 
+    ON p.product_id = s.product_id;
